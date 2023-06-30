@@ -1,4 +1,4 @@
--- database for go web api
+-- table create sqls
 
 -- create test
 DROP TABLE IF EXISTS `test`;

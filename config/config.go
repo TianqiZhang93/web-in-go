@@ -1,10 +1,3 @@
-// config.go - config for api
-
-/*
-modification history
---------------------
-2020/05/15, by NKztq, create
-*/
 package conf
 
 import (

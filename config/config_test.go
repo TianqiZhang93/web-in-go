@@ -1,10 +1,3 @@
-// config_test.go - UT for config.go
-
-/*
-modification history
---------------------
-2020/05/15, by NKztq, create
-*/
 package conf
 
 import (
