@@ -1,0 +1,1 @@
+tools/mysql2sqlite env_databases/online/database.sql | sqlite3 database_test/database.db
