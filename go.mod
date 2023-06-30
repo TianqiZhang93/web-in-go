@@ -4,8 +4,8 @@ go 1.17
 
 require (
 	github.com/gin-gonic/gin v1.6.3
-	github.com/go-gcfg/gcfg v1.2.3
 	github.com/stretchr/testify v1.5.1
+	gopkg.in/yaml.v2 v2.2.8
 )
 
 require (
@@ -23,7 +23,4 @@ require (
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/ugorji/go/codec v1.1.7 // indirect
 	golang.org/x/sys v0.0.0-20200116001909-b77594299b42 // indirect
-	gopkg.in/gcfg.v1 v1.2.3 // indirect
-	gopkg.in/warnings.v0 v0.1.2 // indirect
-	gopkg.in/yaml.v2 v2.2.8 // indirect
 )

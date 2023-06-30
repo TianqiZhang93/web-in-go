@@ -1,0 +1,199 @@
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>config: Go Coverage Report</title>
+		<style>
+			body {
+				background: black;
+				color: rgb(80, 80, 80);
+			}
+			body, pre, #legend span {
+				font-family: Menlo, monospace;
+				font-weight: bold;
+			}
+			#topbar {
+				background: black;
+				position: fixed;
+				top: 0; left: 0; right: 0;
+				height: 42px;
+				border-bottom: 1px solid rgb(80, 80, 80);
+			}
+			#content {
+				margin-top: 50px;
+			}
+			#nav, #legend {
+				float: left;
+				margin-left: 10px;
+			}
+			#legend {
+				margin-top: 12px;
+			}
+			#nav {
+				margin-top: 10px;
+			}
+			#legend span {
+				margin: 0 5px;
+			}
+			.cov0 { color: rgb(192, 0, 0) }
+.cov1 { color: rgb(128, 128, 128) }
+.cov2 { color: rgb(116, 140, 131) }
+.cov3 { color: rgb(104, 152, 134) }
+.cov4 { color: rgb(92, 164, 137) }
+.cov5 { color: rgb(80, 176, 140) }
+.cov6 { color: rgb(68, 188, 143) }
+.cov7 { color: rgb(56, 200, 146) }
+.cov8 { color: rgb(44, 212, 149) }
+.cov9 { color: rgb(32, 224, 152) }
+.cov10 { color: rgb(20, 236, 155) }
+
+		</style>
+	</head>
+	<body>
+		<div id="topbar">
+			<div id="nav">
+				<select id="files">
+				
+				<option value="file0">github.com/NKztq/go-web-api/config/config.go (88.0%)</option>
+				
+				<option value="file1">github.com/NKztq/go-web-api/config/server.go (80.0%)</option>
+				
+				</select>
+			</div>
+			<div id="legend">
+				<span>not tracked</span>
+			
+				<span class="cov0">not covered</span>
+				<span class="cov8">covered</span>
+			
+			</div>
+		</div>
+		<div id="content">
+		
+		<pre class="file" id="file0" style="display: none">package config
+
+import (
+        "fmt"
+        "io/ioutil"
+        "reflect"
+
+        "gopkg.in/yaml.v2"
+)
+
+type ConfChecker interface {
+        Check() error
+}
+
+type LocalConfig struct {
+        Server ServerConfig `json:"server" yaml:"server"`
+}
+
+// Load config and do check.
+func Load(confPath string) (*LocalConfig, error) <span class="cov8" title="1">{
+        conf, err := load(confPath)
+        if err != nil </span><span class="cov0" title="0">{
+                return conf, err
+        }</span>
+
+        <span class="cov8" title="1">err = conf.check()
+        if err != nil </span><span class="cov8" title="1">{
+                return conf, err
+        }</span>
+
+        <span class="cov8" title="1">return conf, nil</span>
+}
+func load(confPath string) (*LocalConfig, error) <span class="cov8" title="1">{
+        fileData, err := ioutil.ReadFile(confPath)
+        if err != nil </span><span class="cov0" title="0">{
+                return nil, fmt.Errorf("ioutil.ReadFile(%s): %s", confPath, err.Error())
+        }</span>
+
+        <span class="cov8" title="1">conf := LocalConfig{}
+        err = yaml.Unmarshal(fileData, &amp;conf)
+        if err != nil </span><span class="cov0" title="0">{
+                return nil, fmt.Errorf("yaml.Unmarshal(): %s", err.Error())
+        }</span>
+
+        <span class="cov8" title="1">return &amp;conf, err</span>
+}
+
+func (a *LocalConfig) check() error <span class="cov8" title="1">{
+        t := reflect.TypeOf(a)
+        v := reflect.ValueOf(a)
+
+        if t.Kind() == reflect.Ptr </span><span class="cov8" title="1">{
+                t = t.Elem()
+                v = v.Elem()
+        }</span>
+
+        <span class="cov8" title="1">fieldNum := t.NumField()
+        for i := 0; i &lt; fieldNum; i++ </span><span class="cov8" title="1">{
+                if err := v.Field(i).Addr().Interface().(ConfChecker).Check(); err != nil </span><span class="cov8" title="1">{
+                        return fmt.Errorf("%v Check(): %v", t.Field(i).Name, err)
+                }</span>
+        }
+
+        <span class="cov8" title="1">return nil</span>
+}
+</pre>
+		
+		<pre class="file" id="file1" style="display: none">package config
+
+import "fmt"
+
+type ServerConfig struct {
+        ServicePort int `json:"service_port" yaml:"service_port"`
+        MonitorPort int `json:"monitor_port" yaml:"monitor_port"`
+        PprofPort   int `json:"pprof_port" yaml:"pprof_port"`
+
+        WhiteList map[string][]string `json:"whitelist" yaml:"whitelist"`
+
+        AccessLogPath string `json:"access_log_path" yaml:"access_log_path"`
+}
+
+// implement APIConfItem
+func (s *ServerConfig) Check() error <span class="cov8" title="1">{
+        if s == nil </span><span class="cov0" title="0">{
+                return fmt.Errorf("nil data")
+        }</span>
+
+        <span class="cov8" title="1">if s.ServicePort &lt;= 0 || s.MonitorPort &lt;= 0 || s.PprofPort &lt;= 0 </span><span class="cov8" title="1">{
+                return fmt.Errorf("service_port[%d] monitor_port[%d] pprof_port[%d] should &gt; 0",
+                        s.ServicePort, s.MonitorPort, s.PprofPort)
+        }</span>
+
+        <span class="cov8" title="1">return nil</span>
+}
+</pre>
+		
+		</div>
+	</body>
+	<script>
+	(function() {
+		var files = document.getElementById('files');
+		var visible;
+		files.addEventListener('change', onChange, false);
+		function select(part) {
+			if (visible)
+				visible.style.display = 'none';
+			visible = document.getElementById(part);
+			if (!visible)
+				return;
+			files.value = part;
+			visible.style.display = 'block';
+			location.hash = part;
+		}
+		function onChange() {
+			select(files.value);
+			window.scrollTo(0, 0);
+		}
+		if (location.hash != "") {
+			select(location.hash.substr(1));
+		}
+		if (!visible) {
+			select("file0");
+		}
+	})();
+	</script>
+</html>

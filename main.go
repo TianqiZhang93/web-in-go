@@ -12,15 +12,41 @@ modification history
 package main
 
 import (
-	"github.com/gin-gonic/gin"
+	"flag"
+	"fmt"
+	"net/http"
+	"os"
+
+	"github.com/NKztq/go-web-api/config"
+	"github.com/NKztq/go-web-api/router"
+)
+
+// flags
+var (
+	localConfPath = flag.String("c", "../conf/server.yaml",
+		"server local config path, default ../conf/server.yaml")
 )
 
 func main() {
-	r := gin.Default()
-	r.GET("/test", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"message": "go api test",
-		})
-	})
-	r.Run(":8001")
+	flag.Parse()
+
+	localConf, err := config.Load(*localConfPath)
+	if err != nil {
+		fmt.Printf("config.Load(): %s\n", err.Error())
+		os.Exit(-1)
+	}
+
+	router, err := router.InitRouter(localConf)
+	if err != nil {
+		fmt.Printf("router.InitRouter(): %s\n", err.Error())
+		os.Exit(-1)
+	}
+
+	// pprof
+	go func() {
+		fmt.Printf("open pprof server error: %v\n",
+			http.ListenAndServe(fmt.Sprintf("localhost:%d", localConf.Server.PprofPort), nil))
+	}()
+
+	router.Run(fmt.Sprintf(":%d", localConf.Server.ServicePort))
 }

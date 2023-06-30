@@ -1,0 +1,7 @@
+server:
+  service_port : 8001
+  monitor_port : 8002
+  pprof_port : 8003
+  whitelist : 
+    test: ["127.0.0.1", "::1"]
+  access_log_path : "../log/access.log"

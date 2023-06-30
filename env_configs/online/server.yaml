@@ -1,0 +1,7 @@
+server:
+  service_port  : 8080
+  monitor_port  : 8081
+  pprof_port    : 8888
+  whitelist: 
+    test: ["127.0.0.1", "::1"]
+  access_log_path: "../log/access.log"

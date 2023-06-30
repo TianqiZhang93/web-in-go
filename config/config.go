@@ -1,23 +1,23 @@
-package conf
+package config
 
 import (
 	"fmt"
+	"io/ioutil"
 	"reflect"
 
-	"github.com/go-gcfg/gcfg"
+	"gopkg.in/yaml.v2"
 )
 
-type APIConfItem interface {
+type ConfChecker interface {
 	Check() error
 }
 
-// Each item of APIConf implements APIConfItem
-type APIConf struct {
-	Server ServerConfig
+type LocalConfig struct {
+	Server ServerConfig `json:"server" yaml:"server"`
 }
 
 // Load config and do check.
-func Load(confPath string) (*APIConf, error) {
+func Load(confPath string) (*LocalConfig, error) {
 	conf, err := load(confPath)
 	if err != nil {
 		return conf, err
@@ -30,15 +30,22 @@ func Load(confPath string) (*APIConf, error) {
 
 	return conf, nil
 }
+func load(confPath string) (*LocalConfig, error) {
+	fileData, err := ioutil.ReadFile(confPath)
+	if err != nil {
+		return nil, fmt.Errorf("ioutil.ReadFile(%s): %s", confPath, err.Error())
+	}
 
-func load(confPath string) (*APIConf, error) {
-	conf := APIConf{}
-	err := gcfg.ReadFileInto(&conf, confPath)
+	conf := LocalConfig{}
+	err = yaml.Unmarshal(fileData, &conf)
+	if err != nil {
+		return nil, fmt.Errorf("yaml.Unmarshal(): %s", err.Error())
+	}
 
 	return &conf, err
 }
 
-func (a *APIConf) check() error {
+func (a *LocalConfig) check() error {
 	t := reflect.TypeOf(a)
 	v := reflect.ValueOf(a)
 
@@ -49,7 +56,7 @@ func (a *APIConf) check() error {
 
 	fieldNum := t.NumField()
 	for i := 0; i < fieldNum; i++ {
-		if err := v.Field(i).Addr().Interface().(APIConfItem).Check(); err != nil {
+		if err := v.Field(i).Addr().Interface().(ConfChecker).Check(); err != nil {
 			return fmt.Errorf("%v Check(): %v", t.Field(i).Name, err)
 		}
 	}

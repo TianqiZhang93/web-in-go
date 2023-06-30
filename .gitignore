@@ -1,1 +1,3 @@
 ./dist
+./bin/go_web
+./coverage

@@ -1,0 +1,22 @@
+mode: set
+github.com/NKztq/go-web-api/config/config.go:20.50,22.16 2 1
+github.com/NKztq/go-web-api/config/config.go:26.2,27.16 2 1
+github.com/NKztq/go-web-api/config/config.go:31.2,31.18 1 1
+github.com/NKztq/go-web-api/config/config.go:22.16,24.3 1 0
+github.com/NKztq/go-web-api/config/config.go:27.16,29.3 1 1
+github.com/NKztq/go-web-api/config/config.go:33.50,35.16 2 1
+github.com/NKztq/go-web-api/config/config.go:39.2,41.16 3 1
+github.com/NKztq/go-web-api/config/config.go:45.2,45.19 1 1
+github.com/NKztq/go-web-api/config/config.go:35.16,37.3 1 0
+github.com/NKztq/go-web-api/config/config.go:41.16,43.3 1 0
+github.com/NKztq/go-web-api/config/config.go:48.37,52.29 3 1
+github.com/NKztq/go-web-api/config/config.go:57.2,58.32 2 1
+github.com/NKztq/go-web-api/config/config.go:64.2,64.12 1 1
+github.com/NKztq/go-web-api/config/config.go:52.29,55.3 2 1
+github.com/NKztq/go-web-api/config/config.go:58.32,59.77 1 1
+github.com/NKztq/go-web-api/config/config.go:59.77,61.4 1 1
+github.com/NKztq/go-web-api/config/server.go:16.38,17.14 1 1
+github.com/NKztq/go-web-api/config/server.go:21.2,21.66 1 1
+github.com/NKztq/go-web-api/config/server.go:26.2,26.12 1 1
+github.com/NKztq/go-web-api/config/server.go:17.14,19.3 1 0
+github.com/NKztq/go-web-api/config/server.go:21.66,24.3 1 1

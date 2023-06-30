@@ -1,4 +1,4 @@
-package conf
+package config
 
 import (
 	"fmt"
@@ -9,21 +9,28 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestCheck(t *testing.T) {
-	confPath := "./testdata/server.conf"
+func TestCheck_OK(t *testing.T) {
+	confPath := "./testdata/server.yaml"
 
 	conf, err := Load(confPath)
 	assert.NoError(t, err)
 
-	expect := &APIConf{
-		Server: ServerConfig{8001, 8002, 8003, []string{"127.0.0.1", "::1"}},
+	expect := &LocalConfig{
+		Server: ServerConfig{
+			ServicePort:   8001,
+			MonitorPort:   8002,
+			PprofPort:     8003,
+			WhiteList:     map[string][]string{"test": {"127.0.0.1", "::1"}},
+			AccessLogPath: "../log/access.log",
+		},
 	}
 	assert.True(t, reflect.DeepEqual(conf, expect))
 }
 
 func TestCheck_EmptyWhitelist(t *testing.T) {
-	confPath := "./testdata/server_emptyWhitelist.conf"
+	confPath := "./testdata/server_invalid_port.yaml"
 
 	_, err := Load(confPath)
-	assert.True(t, strings.Contains(fmt.Sprintf("%v", err), "no item in WhiteList"))
+	fmt.Println(err)
+	assert.True(t, strings.Contains(fmt.Sprintf("%v", err), "should > 0"))
 }

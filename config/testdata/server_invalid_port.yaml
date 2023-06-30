@@ -1,0 +1,4 @@
+server:
+  service_port : 0
+  monitor_port : 0
+  pprof_port : 0
